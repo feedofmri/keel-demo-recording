@@ -1,9 +1,9 @@
-# Copy to .github/workflows/keel.yml in your repository.
-# Keel runs when your CI workflow fails, or when someone with write access comments "/keel fix".
+# Added by Keel (https://keel.boraqs.com). Keel repairs failing tests and labels each fix
+# AUTO-MERGE or NEEDS REVIEW using conformal risk control. Settings live in .keel.toml.
 name: Keel
 on:
   workflow_run:
-    workflows: [CI]          # the name of your test workflow
+    workflows: ["CI"]
     types: [completed]
   issue_comment:
     types: [created]
@@ -13,6 +13,7 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  id-token: write   # lets Keel report run results to https://keel.boraqs.com without a stored secret
 
 jobs:
   keel:
@@ -29,12 +30,9 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pytest
-      - uses: feedofmri/keel@404a1a2e9867972040060178aae30e4a41b6a58a
+      - uses: feedofmri/keel@stable
         env:
           KEEL_MUSE_SPARK_BASE_URL: ${{ secrets.KEEL_MUSE_SPARK_BASE_URL }}
           KEEL_MUSE_SPARK_API_KEY: ${{ secrets.KEEL_MUSE_SPARK_API_KEY }}
           KEEL_MUSE_SPARK_MODEL: ${{ secrets.KEEL_MUSE_SPARK_MODEL }}
-          KEEL_SPARK_OPEN_API_KEY: ${{ secrets.KEEL_SPARK_OPEN_API_KEY }}
-        with:
-          calibration: .keel/calibration.json   # without a calibration Keel never auto-merges
-
+          KEEL_PLATFORM_URL: https://keel.boraqs.com
