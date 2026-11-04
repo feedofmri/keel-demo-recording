@@ -30,9 +30,10 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pytest
-      - uses: feedofmri/keel@stable
+      - uses: feedofmri/keel@404a1a2e9867972040060178aae30e4a41b6a58a
         env:
           KEEL_MUSE_SPARK_BASE_URL: ${{ secrets.KEEL_MUSE_SPARK_BASE_URL }}
           KEEL_MUSE_SPARK_API_KEY: ${{ secrets.KEEL_MUSE_SPARK_API_KEY }}
           KEEL_MUSE_SPARK_MODEL: ${{ secrets.KEEL_MUSE_SPARK_MODEL }}
           KEEL_PLATFORM_URL: https://keel.boraqs.com
+
